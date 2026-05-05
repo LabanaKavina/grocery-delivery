@@ -33,8 +33,61 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="h-screen w-full relative overflow-hidden bg-white">
+    <div className="h-screen w-full relative overflow-hidden bg-white lg:flex lg:items-center lg:justify-center">
       <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 75% 8%, rgba(255,180,160,0.35) 0%, transparent 45%), radial-gradient(ellipse at 25% 5%, rgba(180,200,255,0.3) 0%, transparent 40%), radial-gradient(ellipse at 85% 90%, rgba(200,180,255,0.2) 0%, transparent 40%)' }} />
+
+      {/* Desktop card */}
+      <div className="hidden lg:flex lg:flex-col lg:items-center lg:w-full lg:max-w-md lg:bg-white lg:rounded-2xl lg:shadow-lg lg:p-10 lg:relative lg:z-10 lg:gap-4">
+        <svg width="48" height="60" viewBox="0 0 48 60" fill="none" aria-hidden="true">
+          <path d="M24 58C24 58 8 40 8 26C8 17.163 15.163 10 24 10C32.837 10 40 17.163 40 26C40 40 24 58 24 58Z" fill="#F3603F"/>
+          <path d="M18 18C18 18 16 24 17 30" stroke="#F7A593" strokeWidth="2.5" strokeLinecap="round"/>
+          <path d="M24 10C24 10 20 2 14 4C14 4 18 8 22 10" fill="#53B175"/>
+          <path d="M24 10C24 10 24 1 30 2C30 2 28 7 24 10" fill="#53B175"/>
+          <path d="M24 10C24 10 28 3 34 5C34 5 30 9 24 10" fill="#53B175"/>
+        </svg>
+        <div className="w-full">
+          <h1 className="font-semibold text-[#030303] mb-1" style={{ fontSize: '26px', lineHeight: '29px' }}>Sign Up</h1>
+          <p className="font-medium text-[#7C7C7C] mb-4" style={{ fontSize: '16px' }}>Enter your credentials to continue</p>
+          <p className="font-semibold text-[#7C7C7C] mb-1" style={{ fontSize: '16px' }}>Username</p>
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Afsar Hossen Shuvo"
+            className="w-full bg-transparent border-none outline-none font-medium text-[#030303] placeholder-[#B1B1B1] border-b border-[#E2E2E2] pb-2 mb-1" style={{ fontSize: '18px' }} />
+          {errors.username && <p className="text-red-500 mb-2" style={{ fontSize: '12px' }}>{errors.username}</p>}
+          <p className="font-semibold text-[#7C7C7C] mt-3 mb-1" style={{ fontSize: '16px' }}>Email</p>
+          <div className="relative">
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="imshuvo97@gmail.com"
+              className="w-full bg-transparent border-none outline-none font-medium text-[#030303] placeholder-[#B1B1B1] border-b border-[#E2E2E2] pb-2 pr-8" style={{ fontSize: '18px' }} />
+            {emailValid && <svg className="absolute right-0 top-1" width="20" height="16" viewBox="0 0 20 16" fill="none" aria-hidden="true"><path d="M1 8l6 6L19 1" stroke="#53B175" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+          </div>
+          {errors.email && <p className="text-red-500 mb-2" style={{ fontSize: '12px' }}>{errors.email}</p>}
+          <p className="font-semibold text-[#7C7C7C] mt-3 mb-1" style={{ fontSize: '16px' }}>Password</p>
+          <div className="relative">
+            <input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••"
+              className="w-full bg-transparent border-none outline-none font-medium text-[#030303] border-b border-[#E2E2E2] pb-2 pr-8" style={{ fontSize: '18px' }} />
+            <button onClick={() => setShowPassword(!showPassword)} className="absolute right-0 top-1 bg-transparent border-none cursor-pointer p-0" aria-label="Toggle password">
+              <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true">
+                <path d="M1 8C2.5 4.5 6.5 2 11 2s8.5 2.5 10 6c-1.5 3.5-5.5 6-10 6S2.5 11.5 1 8Z" stroke="#7C7C7C" strokeWidth="1.5"/><circle cx="11" cy="8" r="3" stroke="#7C7C7C" strokeWidth="1.5"/>
+              </svg>
+            </button>
+          </div>
+          {errors.password && <p className="text-red-500 mb-2" style={{ fontSize: '12px' }}>{errors.password}</p>}
+          <p className="font-medium text-[#7C7C7C] mt-3 mb-4" style={{ fontSize: '14px' }}>
+            By continuing you agree to our <span className="text-[#53B175]">Terms of Service</span> and <span className="text-[#53B175]">Privacy Policy</span>.
+          </p>
+          {errors.form && <p className="text-red-500 text-sm mb-3">{errors.form}</p>}
+          <button onClick={handleSignUp} disabled={isLoading}
+            className="w-full border-none cursor-pointer font-semibold text-[#FFF9FF] disabled:opacity-50"
+            style={{ height: '67px', background: '#53B175', borderRadius: '19px', fontSize: '18px' }}>
+            {isLoading ? 'Signing up...' : 'Sign Up'}
+          </button>
+          <p className="text-center font-semibold text-[#030303] mt-4" style={{ fontSize: '14px' }}>
+            Already have an account?{' '}
+            <button onClick={() => navigate('/login')} className="bg-transparent border-none cursor-pointer text-[#53B175] font-semibold" style={{ fontSize: '14px' }}>Signin</button>
+          </p>
+        </div>
+      </div>
+
+      {/* Mobile layout — hidden on desktop */}
+      <div className="lg:hidden">
 
       {/* Carrot icon */}
       <div className="absolute" style={{ left: '50%', top: '77px', transform: 'translateX(-50%)' }}>
@@ -106,6 +159,7 @@ const SignUpPage = () => {
           Signin
         </button>
       </div>
+      </div> {/* end lg:hidden */}
     </div>
   );
 };

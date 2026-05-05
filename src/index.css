@@ -91,3 +91,14 @@
   overflow: hidden;
   transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
 }
+
+/* Desktop overrides for fixed mobile pages */
+@media (min-width: 1024px) {
+  .mobile-fixed-page {
+    position: static !important;
+    bottom: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+  }
+}

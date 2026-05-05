@@ -37,10 +37,13 @@ const ProductDetailPage = () => {
   const favorite = product ? isFavorite(product.id) : false;
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  const [addedToCart, setAddedToCart] = useState(false);
+
   const handleAddToBasket = () => {
     if (!product) return;
     addItem(product, quantity);
     showToast(`${product.name} added to cart`, 'success');
+    setAddedToCart(true);
   };
 
   if (isLoading || !product) {
@@ -58,91 +61,107 @@ const ProductDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col lg:flex-row lg:max-w-5xl lg:mx-auto lg:pt-10 lg:gap-16 lg:px-8 lg:pb-12">
 
-      {/* ── Image area ── */}
-      <div
-        className="bg-[#F2F3F2] rounded-b-[25px] relative overflow-hidden"
-        style={{ height: '371px', flexShrink: 0 }}
-        onTouchStart={(e) => {
-          const touch = e.touches[0];
-          if (!touch) return;
-          e.currentTarget.dataset.startX = String(touch.clientX);
-        }}
-        onTouchEnd={(e) => {
-          const touch = e.changedTouches[0];
-          if (!touch) return;
-          const startX = Number(e.currentTarget.dataset.startX ?? 0);
-          const diff = startX - touch.clientX;
-          if (Math.abs(diff) > 40) {
-            if (diff > 0) setCurrentSlide((s) => Math.min(s + 1, 2));
-            else setCurrentSlide((s) => Math.max(s - 1, 0));
-          }
-        }}
-      >
-        {/* Back arrow */}
+      {/* ── Left column (desktop: back button + image | mobile: image only) ── */}
+      <div className="lg:w-[420px] lg:shrink-0 lg:self-start lg:sticky lg:top-8 lg:flex lg:flex-col lg:gap-4">
+
+        {/* Back button — desktop only */}
         <button
           onClick={() => navigate(-1)}
-          className="absolute z-10 bg-transparent border-none cursor-pointer p-2"
-          style={{ left: '16px', top: '56px' }}
+          className="hidden lg:flex items-center gap-2 bg-transparent border-none cursor-pointer p-0 text-[#181725]"
           aria-label="Go back"
         >
           <svg width="10" height="18" viewBox="0 0 10 18" fill="none" aria-hidden="true">
             <path d="M9 1L1 9l8 8" stroke="#181725" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
+          <span className="font-medium" style={{ fontSize: '14px' }}>Back</span>
         </button>
 
-        {/* Share icon top right */}
-        <button
-          onClick={() => navigate('/cart')}
-          className="absolute z-10 bg-transparent border-none cursor-pointer p-2"
-          style={{ right: '16px', top: '56px' }}
-          aria-label="Go to cart"
-        >
-          <svg width="20" height="22" viewBox="0 0 20 22" fill="none" aria-hidden="true">
-            <path d="M10 1v14M5 5L10 1l5 4M1 17v3a1 1 0 001 1h16a1 1 0 001-1v-3" stroke="#181725" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-
-        {/* Sliding images */}
+        {/* Image area */}
         <div
-          className="flex h-full transition-transform duration-300 ease-in-out"
-          style={{ transform: `translateX(-${currentSlide * 100}%)`, width: '300%' }}
+          className="bg-[#F2F3F2] rounded-b-[25px] relative overflow-hidden lg:rounded-[25px] lg:h-[420px]"
+          style={{ height: '371px', flexShrink: 0 }}
+          onTouchStart={(e) => {
+            const touch = e.touches[0];
+            if (!touch) return;
+            e.currentTarget.dataset.startX = String(touch.clientX);
+          }}
+          onTouchEnd={(e) => {
+            const touch = e.changedTouches[0];
+            if (!touch) return;
+            const startX = Number(e.currentTarget.dataset.startX ?? 0);
+            const diff = startX - touch.clientX;
+            if (Math.abs(diff) > 40) {
+              if (diff > 0) setCurrentSlide((s) => Math.min(s + 1, 2));
+              else setCurrentSlide((s) => Math.max(s - 1, 0));
+            }
+          }}
         >
-          {[1, 0.9, 1.05].map((scale, i) => (
-            <div key={i} className="flex items-center justify-center" style={{ width: '33.333%', height: '100%' }}>
-              <img
-                src={product.image}
-                alt={product.name}
-                className="object-contain transition-transform duration-300"
-                style={{ maxHeight: '240px', maxWidth: '280px', transform: `scale(${scale})` }}
-              />
-            </div>
-          ))}
-        </div>
+          {/* Back arrow — mobile only */}
+          <button
+            onClick={() => navigate(-1)}
+            className="absolute z-10 bg-transparent border-none cursor-pointer p-2 lg:hidden"
+            style={{ left: '16px', top: '56px' }}
+            aria-label="Go back"
+          >
+            <svg width="10" height="18" viewBox="0 0 10 18" fill="none" aria-hidden="true">
+              <path d="M9 1L1 9l8 8" stroke="#181725" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
 
-        {/* Carousel dots */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2">
-          {[0, 1, 2].map((i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentSlide(i)}
-              className="border-none cursor-pointer p-0"
-              style={{
-                width: i === currentSlide ? '16px' : '3px',
-                height: '3px',
-                borderRadius: '13px',
-                background: i === currentSlide ? '#53B175' : '#B3B3B3',
-                transition: 'all 0.3s',
-              }}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
+          {/* Share icon — mobile only */}
+          <button
+            onClick={() => navigate('/cart')}
+            className="absolute z-10 bg-transparent border-none cursor-pointer p-2 lg:hidden"
+            style={{ right: '16px', top: '56px' }}
+            aria-label="Go to cart"
+          >
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" aria-hidden="true">
+              <path d="M10 1v14M5 5L10 1l5 4M1 17v3a1 1 0 001 1h16a1 1 0 001-1v-3" stroke="#181725" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          {/* Sliding images */}
+          <div
+            className="flex h-full transition-transform duration-300 ease-in-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)`, width: '300%' }}
+          >
+            {[1, 0.9, 1.05].map((scale, i) => (
+              <div key={i} className="flex items-center justify-center" style={{ width: '33.333%', height: '100%' }}>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="object-contain transition-transform duration-300"
+                  style={{ maxHeight: '240px', maxWidth: '280px', transform: `scale(${scale})` }}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Carousel dots */}
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2">
+            {[0, 1, 2].map((i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentSlide(i)}
+                className="border-none cursor-pointer p-0"
+                style={{
+                  width: i === currentSlide ? '16px' : '3px',
+                  height: '3px',
+                  borderRadius: '13px',
+                  background: i === currentSlide ? '#53B175' : '#B3B3B3',
+                  transition: 'all 0.3s',
+                }}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
       {/* ── Content ── */}
-      <div className="flex flex-col flex-1 px-6 pt-5 pb-28">
+      <div className="flex flex-col flex-1 px-6 pt-5 pb-28 lg:pb-8 lg:px-0">
 
         {/* Name + favorite */}
         <div className="flex items-start justify-between mb-1">
@@ -168,9 +187,7 @@ const ProductDetailPage = () => {
 
         {/* Quantity + Price */}
         <div className="flex items-center justify-between mb-6">
-          {/* Quantity selector — Figma: 119.67×45.67, center box border-radius: 17px */}
           <div className="flex items-center" style={{ width: '119.67px', height: '45.67px' }}>
-            {/* Minus — left: 6.04% */}
             <button
               onClick={() => setQuantity((q) => (q > 1 ? q - 1 : 1))}
               className="flex items-center justify-center bg-transparent border-none cursor-pointer"
@@ -181,16 +198,9 @@ const ProductDetailPage = () => {
                 <path d="M1 1h12" stroke="#B3B3B3" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
             </button>
-            {/* Number box — 45.67×45.67, border #E2E2E2, border-radius: 17px */}
-            <div
-              className="flex items-center justify-center"
-              style={{ width: '45.67px', height: '45.67px', border: '1px solid #E2E2E2', borderRadius: '17px' }}
-            >
-              <span className="font-semibold text-[#181725]" style={{ fontSize: '18px', lineHeight: '18px' }}>
-                {quantity}
-              </span>
+            <div className="flex items-center justify-center" style={{ width: '45.67px', height: '45.67px', border: '1px solid #E2E2E2', borderRadius: '17px' }}>
+              <span className="font-semibold text-[#181725]" style={{ fontSize: '18px', lineHeight: '18px' }}>{quantity}</span>
             </div>
-            {/* Plus — left: 30.84% */}
             <button
               onClick={() => setQuantity((q) => q + 1)}
               className="flex items-center justify-center bg-transparent border-none cursor-pointer"
@@ -202,16 +212,15 @@ const ProductDetailPage = () => {
               </svg>
             </button>
           </div>
-          {/* Price */}
           <span className="font-bold text-[#181725]" style={{ fontSize: '24px', lineHeight: '18px', letterSpacing: '0.1px' }}>
             ${formatCurrency(product.price)}
           </span>
         </div>
 
         {/* Divider */}
-        <div className="bg-[#E2E2E2] mb-0" style={{ height: '1px' }} />
+        <div className="bg-[#E2E2E2]" style={{ height: '1px' }} />
 
-        {/* Product Detail */}
+        {/* Product Detail accordion */}
         <button
           onClick={() => setDetailExpanded(!detailExpanded)}
           className="flex items-center justify-between w-full bg-transparent border-none cursor-pointer py-4"
@@ -265,17 +274,27 @@ const ProductDetailPage = () => {
           </div>
         </div>
 
-      </div>
+        {/* Add To Basket — fixed on mobile, inline on desktop */}
+        <div className="fixed bottom-0 left-0 right-0 px-6 pb-6 bg-white lg:static lg:px-0 lg:pb-0 lg:pt-8 lg:bg-transparent">
+          {addedToCart ? (
+            <button
+              onClick={() => navigate('/cart')}
+              className="w-full border-none cursor-pointer font-semibold text-[#53B175]"
+              style={{ height: '67px', background: 'white', borderRadius: '19px', fontSize: '18px', border: '2px solid #53B175' }}
+            >
+              Go to Cart
+            </button>
+          ) : (
+            <button
+              onClick={handleAddToBasket}
+              className="w-full border-none cursor-pointer font-semibold text-[#FFF9FF]"
+              style={{ height: '67px', background: '#53B175', borderRadius: '19px', fontSize: '18px' }}
+            >
+              Add To Basket
+            </button>
+          )}
+        </div>
 
-      {/* Add To Basket — fixed bottom */}
-      <div className="fixed bottom-0 left-0 right-0 px-6 pb-6 bg-white">
-        <button
-          onClick={handleAddToBasket}
-          className="w-full border-none cursor-pointer font-semibold text-[#FFF9FF]"
-          style={{ height: '67px', background: '#53B175', borderRadius: '19px', fontSize: '18px' }}
-        >
-          Add To Basket
-        </button>
       </div>
 
     </div>

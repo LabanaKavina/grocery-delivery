@@ -21,6 +21,12 @@ const CategoryListPage = () => {
 
   const categoryName = decodeURIComponent(id ?? '');
 
+  const displayTitle = categoryName === 'best-selling'
+    ? 'Best Selling'
+    : categoryName === 'exclusive-offer'
+    ? 'Exclusive Offer'
+    : categoryName;
+
   useEffect(() => {
     if (products.length === 0) {
       fetchProducts();
@@ -28,6 +34,13 @@ const CategoryListPage = () => {
   }, [products.length, fetchProducts]);
 
   const categoryProducts = useMemo(() => {
+    // Handle special slugs
+    if (categoryName === 'best-selling') {
+      return products.filter((p) => p.reviewRating >= 4);
+    }
+    if (categoryName === 'exclusive-offer') {
+      return products.filter((p) => p.category === ProductCategory.FreshFruitsVegetable);
+    }
     const matchingCategory = Object.values(ProductCategory).find((c) => c === categoryName);
     if (!matchingCategory) return [];
     return products.filter((p) => p.category === matchingCategory);
@@ -50,7 +63,7 @@ const CategoryListPage = () => {
   };
 
   return (
-    <ProductListLayout title={categoryName} onFilterClick={() => setFilterVisible(true)}>
+    <ProductListLayout title={displayTitle} onFilterClick={() => setFilterVisible(true)}>
       <ProductGrid
         products={filteredProducts}
         loading={isLoading}

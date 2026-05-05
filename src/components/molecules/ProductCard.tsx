@@ -15,7 +15,7 @@ const ProductCard = ({ product, onAddToCart, onPress }: ProductCardProps) => {
 
   return (
     <div
-      className="w-[173px] min-h-[249px] rounded-[18px] border border-[#E2E2E2] p-4 flex flex-col cursor-pointer"
+      className="w-[173px] lg:w-full min-h-[249px] rounded-[18px] border border-[#E2E2E2] p-4 flex flex-col cursor-pointer"
       onClick={() => onPress(product.id)}
       role="button"
       tabIndex={0}

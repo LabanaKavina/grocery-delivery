@@ -53,10 +53,10 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-24">
+    <div className="min-h-screen bg-white pb-24 lg:pb-0">
 
-      {/* Search bar row — Figma: left: 25px, top: 48px, width: 324px, height: 51.57px */}
-      <div className="flex items-center gap-3 px-6 pt-12 pb-4">
+      {/* Search bar row */}
+      <div className="flex items-center gap-3 px-6 pt-12 pb-4 lg:max-w-2xl lg:mx-auto lg:pt-8">
         {/* Search input — #F2F3F2, border-radius: 15px */}
         <div
           className="flex items-center gap-3 flex-1"
@@ -109,7 +109,7 @@ const SearchPage = () => {
       </div>
 
       {/* Results grid */}
-      <div className="px-4">
+      <div className="px-4 lg:max-w-7xl lg:mx-auto lg:px-8">
         {!debouncedQuery.trim() ? (
           <div className="flex items-center justify-center py-16">
             <p className="text-[#7C7C7C]" style={{ fontSize: '14px' }}>Search for products</p>

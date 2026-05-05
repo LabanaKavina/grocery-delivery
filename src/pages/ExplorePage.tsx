@@ -66,17 +66,17 @@ const ExplorePage = () => {
   const isSearching = debouncedQuery.trim().length > 0 || filters.categories.length > 0 || filters.brands.length > 0;
 
   return (
-    <div className="min-h-screen bg-white pb-24">
+    <div className="min-h-screen bg-white pb-24 lg:pb-0">
 
       {/* "Find Products" title — only shown when not searching */}
       {!isSearching && (
-        <h1 className="text-center font-bold text-[#181725] pt-14 pb-0" style={{ fontSize: '20px', lineHeight: '18px' }}>
+        <h1 className="text-center font-bold text-[#181725] pt-14 pb-0 lg:pt-8" style={{ fontSize: '20px', lineHeight: '18px' }}>
           Find Products
         </h1>
       )}
 
       {/* Search bar row */}
-      <div className="flex items-center gap-3 px-6 mt-6">
+      <div className="flex items-center gap-3 px-6 mt-6 lg:max-w-2xl lg:mx-auto">
         <div
           className="flex items-center gap-3 flex-1"
           style={{ height: '51.57px', background: '#F2F3F2', borderRadius: '15px', padding: '0 16px' }}
@@ -128,7 +128,7 @@ const ExplorePage = () => {
 
       {/* Search results */}
       {isSearching ? (
-        <div className="px-4 mt-4">
+        <div className="px-4 mt-4 lg:max-w-7xl lg:mx-auto lg:px-8">
           {searchResults.length === 0 && !isLoading ? (
             <div className="flex items-center justify-center py-16">
               <p className="text-[#7C7C7C]" style={{ fontSize: '14px' }}>No results for "{debouncedQuery}"</p>
@@ -144,7 +144,7 @@ const ExplorePage = () => {
         </div>
       ) : (
         /* Category grid */
-        <div className="grid grid-cols-2 gap-4 px-6 mt-6">
+        <div className="grid grid-cols-2 gap-4 px-6 mt-6 lg:grid-cols-4 lg:max-w-7xl lg:mx-auto lg:px-8">
           {categories.map(({ category, label, bg, border, img }) => (
             <button
               key={category}

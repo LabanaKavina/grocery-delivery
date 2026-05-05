@@ -61,7 +61,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-white flex flex-col lg:max-w-3xl lg:mx-auto" style={{ bottom: '92px' }}>
+    <div className="mobile-fixed-page fixed inset-0 bg-white flex flex-col lg:max-w-2xl lg:mx-auto lg:w-full lg:min-h-[calc(100vh-64px)]" style={{ bottom: '92px' }}>
 
       {/* Fixed top — "My Cart" title */}
       <div className="shrink-0">
@@ -103,7 +103,7 @@ const CartPage = () => {
             ))}
           </div>
 
-          {/* Fixed bottom — checkout button */}
+          {/* Bottom — checkout button */}
           <div className="shrink-0">
             <div className="w-full bg-[#E2E2E2]" style={{ height: '1px' }} />
             <div style={{ padding: '20px 25px' }}>

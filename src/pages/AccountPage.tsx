@@ -12,7 +12,7 @@ const AccountPage = () => {
   };
 
   return (
-    <div className="px-4 py-6 lg:max-w-3xl lg:mx-auto">
+    <div className="px-4 py-6 lg:max-w-2xl lg:mx-auto lg:py-10">
       <h1 className="text-2xl font-bold text-[#181725] text-center mb-6">Account</h1>
 
       {isAuthenticated && user ? (

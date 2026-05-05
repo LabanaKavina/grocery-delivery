@@ -21,7 +21,7 @@ const FavouritesPage = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-white flex flex-col lg:max-w-3xl lg:mx-auto" style={{ bottom: '92px' }}>
+    <div className="mobile-fixed-page fixed inset-0 bg-white flex flex-col lg:max-w-2xl lg:mx-auto lg:w-full lg:min-h-[calc(100vh-64px)]" style={{ bottom: '92px' }}>
 
       {/* Fixed top — "Favourites" title */}
       <div className="shrink-0">
